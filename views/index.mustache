@@ -1,1 +1,7 @@
 <h1>Hello Berlin!</h1>
+{{#app}}
+<p>App is authenticated!</p>
+<p>Expires in {{expires_in}} seconds</p>
+<p>Token: {{access_token}}</p>
+{{/app}}
+{{^app}}App is not authenticated :({{/app}}
