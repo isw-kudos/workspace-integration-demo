@@ -1,0 +1,15 @@
+{
+  "extends": [
+    "esnext",
+    "prettier"
+  ],
+  "env": {
+    "node": true
+  },
+  "plugins": ["prettier"],
+  "rules": {
+    "prettier/prettier": "error",
+    "no-console": 0,
+    "import/no-nodejs-modules": [0]
+  }
+}

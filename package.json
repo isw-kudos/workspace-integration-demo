@@ -1,0 +1,28 @@
+{
+  "name": "empty-node",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "node dist",
+    "build": "babel src -s -D -d dist",
+    "dev": "nodemon -w src --exec babel-node src"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.3",
+    "mustache-express": "^1.2.7"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "eslint": "^5.6.1",
+    "eslint-config-esnext": "^4.0.0",
+    "eslint-config-prettier": "^3.1.0",
+    "eslint-plugin-prettier": "^3.0.0",
+    "nodemon": "^1.18.4",
+    "prettier": "^1.14.3"
+  }
+}
