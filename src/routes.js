@@ -1,5 +1,13 @@
 import { Router } from 'express';
-import { index, spaces, profile, messageForm, message } from './controller';
+import {
+  index,
+  spaces,
+  profile,
+  messageForm,
+  message,
+  redirect,
+  authorize,
+} from './controller';
 
 const router = new Router();
 
@@ -17,6 +25,12 @@ router.route('/message').get(messageForm);
 
 //send-message
 router.route('/send-message').post(message);
+
+//oauth
+router.route('/oauth').get(redirect);
+
+//oauth redirect
+router.route('/oauth/redirect').get(authorize);
 
 //404 any other route
 router.use((req, res) =>

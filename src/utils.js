@@ -4,6 +4,7 @@ export const URLS = {
   base: 'https://api.watsonwork.ibm.com',
   graphql: () => `${URLS.base}/graphql`,
   token: () => `${URLS.base}/oauth/token`,
+  authorize: query => `${URLS.base}/oauth/authorize?${query}`,
   message: spaceId => `${URLS.base}/v1/spaces/${spaceId}/messages`,
 };
 

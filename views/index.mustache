@@ -1,5 +1,11 @@
 <h1>Hello Berlin!</h1>
-
 <p><a href="/profile">Profile</a></p>
 <p><a href="/spaces">Spaces</a></p>
 <p><a href="/message">Message</a></p>
+
+{{^user}}
+<p><a href="/oauth">OAuth</a></p>
+{{/user}}
+{{#user}}
+<h3>Logged in as {{displayName}}</h3>
+{{/user}}
