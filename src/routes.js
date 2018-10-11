@@ -1,50 +1,22 @@
 import { Router } from 'express';
-import config from './config';
-import getAppAuthToken from './auth';
-import getProfile from './profile';
-import getSpaces from './spaces';
-import sendMessage from './message';
-
-const { appId, secret } = config;
+import { index, spaces, profile, messageForm, message } from './controller';
 
 const router = new Router();
 
-//initialise
-let auth = {};
-getAppAuthToken(appId, secret).then(
-  response => console.log('got app token') || (auth = response)
-);
-
 //index
-router.route('/').get((req, res) => res.render('index'));
+router.route('/').get(index);
 
 //spaces
-router.route('/spaces').get((req, res) =>
-  getSpaces(auth.access_token)
-    .then(spaces => res.render('spaces', { spaces }))
-    .catch(error => res.render('error', { error }))
-);
+router.route('/spaces').get(spaces);
 
 //profile
-router.route('/profile').get((req, res) =>
-  getProfile(auth.access_token)
-    .then(profile => res.render('profile', { profile }))
-    .catch(error => res.render('error', { error }))
-);
+router.route('/profile').get(profile);
 
 //message form
-router.route('/message').get((req, res) =>
-  getSpaces(auth.access_token)
-    .then(spaces => res.render('message', { spaces, sent: req.query.sent }))
-    .catch(error => res.render('error', { error }))
-);
+router.route('/message').get(messageForm);
 
 //send-message
-router.route('/send-message').post((req, res) => {
-  sendMessage(req.body, auth.access_token)
-    .then(() => res.redirect('/message?sent=true'))
-    .catch(error => res.render('error', { error }));
-});
+router.route('/send-message').post(message);
 
 //404 any other route
 router.use((req, res) =>

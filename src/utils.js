@@ -1,10 +1,39 @@
 import fetch from 'node-fetch';
 
-const GRAPHQL_URL = 'https://api.watsonwork.ibm.com/graphql';
+export const URLS = {
+  base: 'https://api.watsonwork.ibm.com',
+  graphql: () => `${URLS.base}/graphql`,
+  token: () => `${URLS.base}/oauth/token`,
+  message: spaceId => `${URLS.base}/v1/spaces/${spaceId}/messages`,
+};
+
+export const QUERIES = {
+  spaces: (num = 200) => `
+    query getSpaces {
+      spaces(first: ${num}) {
+        items {
+          id
+          title
+        }
+      }
+    }`,
+  me: () => `
+      query me {
+        me {
+          displayName,
+          email,
+          created,
+          createdBy {
+            displayName,
+            email
+          }
+        }
+      }`,
+};
 
 export function executeGraphql(body, token) {
   return executePostQuery(
-    GRAPHQL_URL,
+    URLS.graphql(),
     {
       'Content-Type': 'application/graphql',
       'x-graphql-view': 'PUBLIC, BETA',

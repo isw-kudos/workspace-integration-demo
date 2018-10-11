@@ -1,14 +1,13 @@
 import fetch from 'node-fetch';
 import qs from 'querystring';
-
-const TOKEN_URL = 'https://api.watsonwork.ibm.com/oauth/token';
+import { URLS } from './utils';
 
 export default function getAppAuthToken(appId, secret) {
   //encode appId and secret
   const credentials = Buffer.from(`${appId}:${secret}`).toString('base64');
 
   //get access token to auth as app
-  return fetch(TOKEN_URL, {
+  return fetch(URLS.token(), {
     method: 'post',
     body: qs.stringify({ grant_type: 'client_credentials' }),
     headers: {

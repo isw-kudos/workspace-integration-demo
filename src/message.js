@@ -1,7 +1,4 @@
-import { executePostQuery } from './utils';
-
-const MESSAGE_URL = spaceId =>
-  `https://api.watsonwork.ibm.com/v1/spaces/${spaceId}/messages`;
+import { executePostQuery, URLS } from './utils';
 
 export default function sendMessage(message, token) {
   const { spaceId, text, color, title, actorName, actorAvatar } = message;
@@ -25,7 +22,7 @@ export default function sendMessage(message, token) {
   });
 
   return executePostQuery(
-    MESSAGE_URL(spaceId),
+    URLS.message(spaceId),
     { 'Content-type': 'application/json' },
     body,
     token
