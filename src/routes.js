@@ -8,17 +8,30 @@ const { appId, secret } = config;
 
 const router = new Router();
 
-//index
-router.route('/').get((req, res) =>
-  getAppAuthToken(appId, secret)
-    .then(({ access_token }) =>
-      Promise.all([getProfile(access_token), getSpaces(access_token)])
-    )
-    .then(([profile, spaces]) => res.render('index', { profile, spaces }))
-    .catch(error => res.status(error.status || 500).render('error', { error }))
+//initialise
+let appAuth = {};
+getAppAuthToken(appId, secret).then(
+  app => console.log('got app token') || (appAuth = app)
 );
 
-//any other route
+//index
+router.route('/').get((req, res) => res.render('index'));
+
+//spaces
+router.route('/spaces').get((req, res) =>
+  getSpaces(appAuth.access_token)
+    .then(spaces => res.render('spaces', { spaces }))
+    .catch(error => res.render('error', { error }))
+);
+
+//profile
+router.route('/profile').get((req, res) =>
+  getProfile(appAuth.access_token)
+    .then(profile => res.render('profile', { profile }))
+    .catch(error => res.render('error', { error }))
+);
+
+//404 any other route
 router.use((req, res) =>
   res.render('error', { error: { status: 404, statusText: 'Not Found' } })
 );
