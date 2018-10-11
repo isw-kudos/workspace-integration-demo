@@ -41,10 +41,8 @@ router.route('/message').get((req, res) =>
 
 //send-message
 router.route('/send-message').post((req, res) => {
-  const { spaceId = '', text = '' } = req.body;
   sendMessage({
-    spaceId,
-    text,
+    ...req.body,
     token: auth.access_token,
   })
     .then(() => res.redirect('/message?sent=true'))
