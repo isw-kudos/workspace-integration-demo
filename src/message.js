@@ -3,7 +3,9 @@ import { executePostQuery } from './utils';
 const MESSAGE_URL = spaceId =>
   `https://api.watsonwork.ibm.com/v1/spaces/${spaceId}/messages`;
 
-export default function sendMessage({ spaceId, text, color, title, token }) {
+export default function sendMessage(message, token) {
+  const { spaceId, text, color, title, actorName, actorAvatar } = message;
+
   const body = JSON.stringify({
     type: 'appMessage',
     version: '1',
@@ -14,6 +16,10 @@ export default function sendMessage({ spaceId, text, color, title, token }) {
         text,
         title,
         color,
+        actor: {
+          name: actorName,
+          avatar: actorAvatar,
+        },
       },
     ],
   });

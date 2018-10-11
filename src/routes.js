@@ -41,10 +41,7 @@ router.route('/message').get((req, res) =>
 
 //send-message
 router.route('/send-message').post((req, res) => {
-  sendMessage({
-    ...req.body,
-    token: auth.access_token,
-  })
+  sendMessage(req.body, auth.access_token)
     .then(() => res.redirect('/message?sent=true'))
     .catch(error => res.render('error', { error }));
 });
