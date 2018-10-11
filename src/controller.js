@@ -68,10 +68,29 @@ export function authorize(req, res) {
 
 //webhook handler
 export function webhook(req, res) {
-  handleWebhook(req, res, config);
+  handleWebhook(req, res, config, execute);
 }
 
 //list received webhooks
 export function webhooks(req, res) {
   res.render('webhooks', { webhooks: getWebhookHistory() });
+}
+
+//handler for webhook events
+function execute(event) {
+  const { type, spaceId } = event;
+  switch (type) {
+    case 'welcome': {
+      sendMessage(
+        {
+          spaceId,
+          title: 'Howdy! 🎉',
+          text: `Thanks for adding me! 🙏
+          [Here](https://www.google.com) is some important info about how to make the most of my abilities.
+          I look forward to helping you! 😀`,
+        },
+        appAuth.access_token
+      );
+    }
+  }
 }

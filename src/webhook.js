@@ -10,8 +10,8 @@ function hmac(string, secret) {
     .digest('hex');
 }
 
-export function handleWebhook(req, res, config) {
-  const { webhookSecret } = config;
+export function handleWebhook(req, res, config, execute) {
+  const { webhookSecret, appId } = config;
   const { headers, body, rawBody } = req;
   const { type, ...event } = body;
   const token = headers['x-outbound-token'];
@@ -40,6 +40,12 @@ export function handleWebhook(req, res, config) {
         .header('x-outbound-token', hmac(JSON.stringify(reply), webhookSecret))
         .status(200)
         .json(reply);
+    }
+
+    case 'space-members-added': {
+      const { memberIds, spaceId } = event;
+      if (memberIds.indexOf(appId) > -1) execute({ type: 'welcome', spaceId });
+      break;
     }
   }
 
