@@ -1,0 +1,11 @@
+{{> menu}}
+<h1>Webhooks Received</h1>
+
+{{#webhooks}}
+<p>
+  {{index}}. <br>
+  Type: {{type}} <br>
+  Received: {{received}} <br>
+  Body: {{{body}}} <br>
+</p>
+{{/webhooks}}

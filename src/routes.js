@@ -7,6 +7,8 @@ import {
   message,
   redirect,
   authorize,
+  webhook,
+  webhooks,
 } from './controller';
 
 const router = new Router();
@@ -31,6 +33,12 @@ router.route('/oauth').get(redirect);
 
 //oauth redirect
 router.route('/oauth/redirect').get(authorize);
+
+//webhook handler
+router.route('/webhook').post(webhook);
+
+//webhooks history view
+router.route('/webhooks').get(webhooks);
 
 //404 any other route
 router.use((req, res) =>

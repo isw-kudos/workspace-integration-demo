@@ -3,6 +3,7 @@ import config from './config';
 import getProfile from './profile';
 import getSpaces from './spaces';
 import sendMessage from './message';
+import { handleWebhook, getWebhookHistory } from './webhook';
 
 const { appId, secret, redirectUri } = config;
 
@@ -63,4 +64,14 @@ export function authorize(req, res) {
       res.redirect('/');
     })
     .catch(error => res.render('error', { error }));
+}
+
+//webhook handler
+export function webhook(req, res) {
+  handleWebhook(req, res, config);
+}
+
+//list received webhooks
+export function webhooks(req, res) {
+  res.render('webhooks', { webhooks: getWebhookHistory() });
 }

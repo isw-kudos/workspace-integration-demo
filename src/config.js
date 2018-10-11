@@ -6,4 +6,5 @@ export default {
   appId: process.env.APP_ID,
   secret: process.env.APP_SECRET,
   redirectUri: process.env.REDIRECT_URI,
+  webhookSecret: process.env.WEBHOOK_SECRET,
 };
