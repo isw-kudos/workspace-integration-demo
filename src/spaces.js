@@ -1,5 +1,5 @@
 import { get } from 'lodash';
-import executeGraphql from './utils';
+import { executeGraphql } from './utils';
 
 //graphql query for getting spaces
 const GET_SPACES_QUERY = `

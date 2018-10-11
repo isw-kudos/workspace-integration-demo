@@ -2,13 +2,24 @@ import fetch from 'node-fetch';
 
 const GRAPHQL_URL = 'https://api.watsonwork.ibm.com/graphql';
 
-export default function executeGraphql(body, token) {
-  return fetch(GRAPHQL_URL, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${token}`,
+export function executeGraphql(body, token) {
+  return executePostQuery(
+    GRAPHQL_URL,
+    {
       'Content-Type': 'application/graphql',
       'x-graphql-view': 'PUBLIC, BETA',
+    },
+    body,
+    token
+  );
+}
+
+export function executePostQuery(url, headers = {}, body, token) {
+  return fetch(url, {
+    method: 'POST',
+    headers: {
+      ...headers,
+      Authorization: `Bearer ${token}`,
     },
     body,
   })

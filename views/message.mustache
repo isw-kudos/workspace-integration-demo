@@ -1,0 +1,19 @@
+<h1>Message</h1>
+
+<form action="/send-message" method="post">
+  <p>1. Select a Space</p>
+  <select name="spaceId" size="8">
+    {{#spaces}}<option value={{id}}>{{title}}</option>{{/spaces}}
+  </select>
+  
+  <p>2. Type a message</p>
+  <textarea name="text" rows="8"></textarea>
+  
+  <p>3. <input type="submit" value="Send Message!"></p>
+</form>
+
+{{#sent}}
+<h4>Your message was sent!</h4>
+{{/sent}}
+
+{{> menu}}

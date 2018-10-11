@@ -1,5 +1,5 @@
 import { get } from 'lodash';
-import executeGraphql from './utils';
+import { executeGraphql } from './utils';
 
 //graphql query for getting my info
 const PROFILE_QUERY = `
