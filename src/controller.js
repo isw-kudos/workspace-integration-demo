@@ -127,6 +127,60 @@ function execute(event) {
       break;
     }
 
+    //Focus annotation
+    case 'message-focus':
+      console.log(
+        '\nWatson has identified a Focus - lens, confidence, phrase, categories\n',
+        event.lens, // 'ActionRequest', 'Question' 'Commitment'
+        event.confidence,
+        event.phrase,
+        event.categories
+      );
+      break;
+
+    //Moment annotation
+    case 'conversation-moment':
+      console.log(
+        '\nWatson identified a moment - participants, phrases, mostRelevantMessage\n',
+        event.participants,
+        event.momentSummary.phrases,
+        event.momentSummary.mostRelevantMessage
+      );
+      break;
+
+    //Information extraction annotation
+    case 'message-nlp-docSentiment':
+      console.log(
+        '\nWatson analyzed message sentiment\n',
+        event.docSentiment.type,
+        event.docSentiment.score
+      );
+      break;
+    case 'message-nlp-keywords':
+      console.log(
+        '\nWatson identified some keywords\n',
+        event.keywords //text, relevance
+      );
+      break;
+    case 'message-nlp-concepts':
+      console.log(
+        '\nWatson identified some concepts\n',
+        event.concepts //dbpedia, text, relevance
+      );
+      break;
+    case 'message-nlp-entities':
+      console.log(
+        '\nWatson identified entities\n',
+        event.entities //text, type, relevance
+      );
+      break;
+    case 'message-nlp-taxonomy':
+      console.log(
+        '\nWatson has identified taxonomy\n',
+        event.taxonomy //label, score, confident
+      );
+      break;
+
     default:
       console.log('Unactionable annotationType', annotationType);
   }
