@@ -23,6 +23,7 @@ export const QUERIES = {
         me {
           displayName,
           email,
+          photoUrl,
           created,
           createdBy {
             displayName,
