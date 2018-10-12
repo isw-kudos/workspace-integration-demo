@@ -80,9 +80,9 @@ export function webhooks(req, res) {
 
 //handler for webhook events
 function execute(event) {
-  const { type, actionId, spaceId, userId, userName } = event;
+  const { actionId, spaceId, userId, userName, annotationType } = event;
   const token = appAuth.access_token;
-  switch (type) {
+  switch (annotationType) {
     case 'welcome': {
       sendMessage(
         {
@@ -128,6 +128,6 @@ function execute(event) {
     }
 
     default:
-      console.log('Unactionable event type', type);
+      console.log('Unactionable annotationType', annotationType);
   }
 }
