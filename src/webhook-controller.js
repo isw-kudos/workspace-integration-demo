@@ -1,6 +1,6 @@
 import sendMessage from './message';
 import postAnonymously from './anonymize';
-import postRelevantXkcd from './xkcd';
+import { postRelevantXkcd, suggestXkcd } from './xkcd';
 import createTargetedMessage from './targeted';
 
 //handler for webhook events
@@ -75,7 +75,7 @@ export default function execute(token, event) {
     //Information extraction annotation
     case 'message-nlp-docSentiment':
       console.log(
-        '\nWatson analyzed message sentiment\n',
+        '\nWatson analyzed message sentiment - type, score\n',
         event.docSentiment.type,
         event.docSentiment.score
       );
@@ -85,12 +85,14 @@ export default function execute(token, event) {
         '\nWatson identified some keywords\n',
         event.keywords //text, relevance
       );
+      suggestXkcd(getStringFromKeywords(event.keywords), spaceId, token);
       break;
     case 'message-nlp-concepts':
       console.log(
         '\nWatson identified some concepts\n',
         event.concepts //dbpedia, text, relevance
       );
+      suggestXkcd(getStringFromKeywords(event.concepts), spaceId, token);
       break;
     case 'message-nlp-entities':
       console.log(
@@ -108,4 +110,11 @@ export default function execute(token, event) {
     default:
       console.log('Unactionable annotationType', annotationType);
   }
+}
+
+function getStringFromKeywords(keywords, confidence = 0.8) {
+  return keywords
+    .filter(w => w.relevance > confidence)
+    .map(w => w.text)
+    .join(' ');
 }

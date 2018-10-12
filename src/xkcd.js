@@ -5,13 +5,7 @@ import sendMessage from './message';
 
 const cache = {};
 
-export default function postRelevantXkcd({
-  search,
-  userId,
-  userName,
-  spaceId,
-  token,
-}) {
+export function postRelevantXkcd({ search, userId, userName, spaceId, token }) {
   //if search starts with confirm-comic, get the comicId and the search str
   const confirmed = search.match(/^\s*confirm-comic ([0-9]+) (.*)/);
 
@@ -36,7 +30,7 @@ export default function postRelevantXkcd({
     actorName: userName,
     actorAvatar: URLS.photo(userId),
     text: `*[${comic.title}](https://${comic.url})*
-        Searched for _"${search}"_`,
+        Searched for "${search}"`,
   };
 
   return sendMessage(message, token).then(() => ({
@@ -51,7 +45,9 @@ function searchAndConfirm(search) {
     if (!comics.length)
       return {
         title: 'No relevant xkcd',
-        text: `No results found for _"${search}"_. Have you somehow found a situation _without_ a relevant XKCD?!`,
+        text: search
+          ? `No results found for "${search}". Have you somehow found a situation _without_ a relevant XKCD?!`
+          : 'Please type in a search string',
       };
 
     //send options to user and add options to cache
@@ -75,6 +71,26 @@ function searchAndConfirm(search) {
         ],
       };
     });
+  });
+}
+
+const WAIT = 5;
+let lastRun = 0;
+
+export function suggestXkcd(search, spaceId, token) {
+  //only run every WAIT minutes
+  if (!search || lastRun > Date.now() - WAIT * 60 * 1000) return;
+  lastRun = Date.now();
+  getRelevantXkcd(search).then(comics => {
+    if (!comics.length) return;
+    sendMessage(
+      {
+        spaceId,
+        text: `Click to view xkcd relevant to "${search}"`,
+        action: `/xkcd ${search}`,
+      },
+      token
+    );
   });
 }
 
