@@ -6,23 +6,23 @@ This repository contains commit by commit examples of a Hello World Node+express
 It covers the following major integration points:
 
 1. Authenticate as an app and use API
-  - Get app details
-  - Get connected spaces
-  - Send a message as an app
-  - Send message options - color, title, markdown, actor
+    - Get app details
+    - Get connected spaces
+    - Send a message as an app
+    - Send message options - color, title, markdown, actor
 2. User Authentication
-  - OAuth dance to get access_token
-  - Act on behalf of user
+    - OAuth dance to get access_token
+    - Act on behalf of user
 3. Listen to events via webhook
-  - Webhook verification
-  - Message Annotation events
-  - Post a Welcome message
+    - Webhook verification
+    - Message Annotation events
+    - Post a Welcome message
 4. Slash Commands
-5. Send feedback to slash commands using targeted dialogs
+5. Respond to Slash commands using targeted messages
 6. 2 targeted message types
-  - "Annotation" or Single view
-  - "Attachments" or Cards view
-  - Buttons with payload to make dialogs interactive
+    - "Annotation" or Single view
+    - "Attachments" or Cards view
+    - Buttons with payload to make dialogs interactive
 7. Other annotations
 8. Add message focus manually on a message via API
 
