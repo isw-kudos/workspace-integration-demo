@@ -6,6 +6,7 @@ import sendMessage from './message';
 import { handleWebhook, getWebhookHistory } from './webhook';
 import postAnonymously from './anonymize';
 import postRelevantXkcd from './xkcd';
+import createTargetedMessage from './targeted';
 
 const { appId, secret, redirectUri } = config;
 
@@ -80,6 +81,7 @@ export function webhooks(req, res) {
 //handler for webhook events
 function execute(event) {
   const { type, actionId, spaceId, userId, userName } = event;
+  const token = appAuth.access_token;
   switch (type) {
     case 'welcome': {
       sendMessage(
@@ -90,7 +92,7 @@ function execute(event) {
           [Here](https://www.google.com) is some important info about how to make the most of my abilities.
           I look forward to helping you! 😀`,
         },
-        appAuth.access_token
+        token
       );
       break;
     }
@@ -98,22 +100,30 @@ function execute(event) {
     case 'actionSelected': {
       const [action, ...params] = actionId.split(/\s/);
       const text = params.join(' ');
+      let executing;
       if (action === '/anonymize') {
-        postAnonymously({
+        executing = postAnonymously({
           text,
           userId,
           spaceId,
           token: appAuth.access_token,
         });
       } else if (action === '/xkcd') {
-        postRelevantXkcd({
+        executing = postRelevantXkcd({
           search: text,
           userId,
           spaceId,
           userName,
-          token: appAuth.access_token,
+          token,
         });
       }
+
+      //send feedback if executing action
+      if (executing)
+        executing
+          .catch(err => console.log('Error executing', err))
+          .then(response => createTargetedMessage(response, event, token))
+          .catch(err => console.log('Error creating targeted dialog', err));
       break;
     }
 

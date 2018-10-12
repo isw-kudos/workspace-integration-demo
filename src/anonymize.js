@@ -10,7 +10,7 @@ export default function postAnonymously({ text, userId, spaceId, token }) {
   //generate alias for user
   if (!aliases[userId]) aliases[userId] = chance.last();
   //post message
-  sendMessage(
+  return sendMessage(
     {
       spaceId,
       text,
@@ -18,5 +18,8 @@ export default function postAnonymously({ text, userId, spaceId, token }) {
       title: '(Pseudonym)',
     },
     token
-  );
+  ).then(() => ({
+    title: 'Your message was sent!',
+    text: `Your message was posted under the pseudonym *${aliases[userId]}*`,
+  }));
 }

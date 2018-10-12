@@ -10,21 +10,31 @@ export default function postRelevantXkcd({
   spaceId,
   token,
 }) {
-  getRelevantXkcd(search).then(comics => {
+  return getRelevantXkcd(search).then(comics => {
     if (comics.length) {
       const comic = comics[0];
-      sendMessage(
+      const text = `*[${comic.title}](https://${comic.url})*
+        Searched for _"${search}"_`;
+
+      return sendMessage(
         {
           spaceId,
           title: 'posted a relevant XKCD',
           actorName: userName,
           actorAvatar: URLS.photo(userId),
-          text: `*[${comic.title}](https://${comic.url})*
-          Searched for _"${search}"_`,
+          text,
         },
         token
-      );
+      ).then(() => ({
+        title: 'A relevant xkcd was shared!',
+        text,
+      }));
     }
+    //if no xkcd found
+    return Promise.resolve({
+      title: 'No relevant xkcd',
+      text: `No results found for _"${search}"_. Have you somehow found a situation _without_ a relevant XKCD?!`,
+    });
   });
 }
 
