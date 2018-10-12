@@ -4,13 +4,13 @@ import getProfile from './profile';
 import getSpaces from './spaces';
 import sendMessage from './message';
 import { handleWebhook, getWebhookHistory } from './webhook';
+import postAnonymously from './anonymize';
 
 const { appId, secret, redirectUri } = config;
 
 //initialise
 let appAuth, user;
 getAppAuthToken(appId, secret).then(response => (appAuth = response));
-
 function getAccessToken() {
   return (user || appAuth || {}).access_token;
 }
@@ -78,7 +78,7 @@ export function webhooks(req, res) {
 
 //handler for webhook events
 function execute(event) {
-  const { type, spaceId } = event;
+  const { type, actionId, spaceId, userId } = event;
   switch (type) {
     case 'welcome': {
       sendMessage(
@@ -91,6 +91,24 @@ function execute(event) {
         },
         appAuth.access_token
       );
+      break;
     }
+
+    case 'actionSelected': {
+      const [action, ...params] = actionId.split(/\s/);
+      const text = params.join(' ');
+      if (action === '/anonymize') {
+        postAnonymously({
+          text,
+          userId,
+          spaceId,
+          token: appAuth.access_token,
+        });
+      }
+      break;
+    }
+
+    default:
+      console.log('Unactionable event type', type, event);
   }
 }

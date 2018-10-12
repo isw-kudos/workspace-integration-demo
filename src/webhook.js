@@ -47,6 +47,14 @@ export function handleWebhook(req, res, config, execute) {
       if (memberIds.indexOf(appId) > -1) execute({ type: 'welcome', spaceId });
       break;
     }
+
+    //event fired for slash commands, moments, focus
+    case 'message-annotation-added': {
+      const { annotationPayload, spaceId, userId, userName } = event;
+      const annotation = JSON.parse(annotationPayload);
+      execute({ ...annotation, spaceId, userId, userName });
+      break;
+    }
   }
 
   //for all events other than verification
