@@ -11,32 +11,14 @@ export default function postAnonymously({ text, userId, spaceId, token }) {
   const change = text.match(/^\s*change-alias(.*)/);
   if (change) text = change[1].trim();
 
-  let alias = aliases[userId];
+  const alias = aliases[userId];
 
   //need to confirm alias on first run or if running change-alias
   const needToConfirm = !alias || change;
 
   //send confirmation response if alias confirmation is required
   if (needToConfirm) {
-    aliases[userId] = alias = chance.last();
-
-    return Promise.resolve({
-      title: 'Please Confirm Alias',
-      text: `Your messages will be posted under the alias "${alias}"`,
-      //button payload needs to have full context of command, so we pass in the text as well
-      buttons: [
-        {
-          text: 'Confirm',
-          payload: `/anonymize ${text}`,
-          style: 'PRIMARY',
-        },
-        {
-          text: 'Shuffle',
-          payload: `/anonymize change-alias ${text}`,
-          style: 'SECONDARY',
-        },
-      ],
-    });
+    return confirmAlias(userId, text);
   }
 
   //if it was just a change-alias request
@@ -56,4 +38,26 @@ export default function postAnonymously({ text, userId, spaceId, token }) {
     text: `Your message was posted under the alias *${aliases[userId]}*
     Run the command \`/anonymize change-alias\` to change your alias.`,
   }));
+}
+
+function confirmAlias(userId, text) {
+  const alias = (aliases[userId] = chance.last());
+
+  return Promise.resolve({
+    title: 'Please Confirm Alias',
+    text: `Your messages will be posted under the alias "${alias}"`,
+    //button payload needs to have full context of command, so we pass in the text as well
+    buttons: [
+      {
+        text: 'Confirm',
+        payload: `/anonymize ${text}`,
+        style: 'PRIMARY',
+      },
+      {
+        text: 'Shuffle',
+        payload: `/anonymize change-alias ${text}`,
+        style: 'SECONDARY',
+      },
+    ],
+  });
 }
