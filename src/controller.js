@@ -5,6 +5,7 @@ import getSpaces from './spaces';
 import sendMessage from './message';
 import { handleWebhook, getWebhookHistory } from './webhook';
 import postAnonymously from './anonymize';
+import postRelevantXkcd from './xkcd';
 
 const { appId, secret, redirectUri } = config;
 
@@ -78,7 +79,7 @@ export function webhooks(req, res) {
 
 //handler for webhook events
 function execute(event) {
-  const { type, actionId, spaceId, userId } = event;
+  const { type, actionId, spaceId, userId, userName } = event;
   switch (type) {
     case 'welcome': {
       sendMessage(
@@ -104,11 +105,19 @@ function execute(event) {
           spaceId,
           token: appAuth.access_token,
         });
+      } else if (action === '/xkcd') {
+        postRelevantXkcd({
+          search: text,
+          userId,
+          spaceId,
+          userName,
+          token: appAuth.access_token,
+        });
       }
       break;
     }
 
     default:
-      console.log('Unactionable event type', type, event);
+      console.log('Unactionable event type', type);
   }
 }

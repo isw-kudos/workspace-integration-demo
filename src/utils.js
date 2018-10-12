@@ -6,6 +6,7 @@ export const URLS = {
   token: () => `${URLS.base}/oauth/token`,
   authorize: query => `${URLS.base}/oauth/authorize?${query}`,
   message: spaceId => `${URLS.base}/v1/spaces/${spaceId}/messages`,
+  photo: userId => `${URLS.base}/photos/${userId}.jpg`,
 };
 
 export const QUERIES = {
