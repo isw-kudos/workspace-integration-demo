@@ -121,7 +121,7 @@ function execute(event) {
       //send feedback if executing action
       if (executing)
         executing
-          .catch(err => console.log('Error executing', err))
+          .catch(err => console.log('Error executing', err) || err)
           .then(response => createTargetedMessage(response, event, token))
           .catch(err => console.log('Error creating targeted dialog', err));
       break;
