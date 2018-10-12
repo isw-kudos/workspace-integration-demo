@@ -1,4 +1,4 @@
-import { EnumType, jsonToGraphQLQuery } from 'json-to-graphql-query';
+import { EnumType } from 'json-to-graphql-query';
 import { pickBy } from 'lodash';
 import { executeGraphql } from './utils';
 
@@ -32,7 +32,7 @@ export default function createTargetedMessage(response, annotation, token) {
   };
 
   //convert json to graphql query
-  return executeGraphql(jsonToGraphQLQuery(query), token);
+  return executeGraphql(query, token);
 }
 
 //translate response to WW API requirements

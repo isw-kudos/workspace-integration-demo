@@ -51,7 +51,7 @@ export function handleWebhook(req, res, config, execute) {
     //event fired for slash commands, moments, focus
     case 'message-annotation-added': {
       const { annotationPayload } = event;
-      const annotation = JSON.parse(annotationPayload);
+      const annotation = annotationPayload ? JSON.parse(annotationPayload) : {};
       execute({ ...annotation, ...event });
       break;
     }

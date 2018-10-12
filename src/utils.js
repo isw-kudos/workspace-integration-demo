@@ -1,4 +1,5 @@
 import fetch from 'node-fetch';
+import { jsonToGraphQLQuery } from 'json-to-graphql-query';
 
 export const URLS = {
   base: 'https://api.watsonwork.ibm.com',
@@ -35,6 +36,7 @@ export const QUERIES = {
 };
 
 export function executeGraphql(body, token) {
+  body = typeof body === 'string' ? body : jsonToGraphQLQuery(body);
   return executePostQuery(
     URLS.graphql(),
     {
