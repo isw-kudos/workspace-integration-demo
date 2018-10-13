@@ -54,6 +54,8 @@ REDIRECT_URI=http://localhost:3000/oauth/redirect
 ngrok http -subdomain=<subdomain> localhost:3000
 ```
 7. Run an instance of [relevant-xkcd](https://github.com/adtac/relevant-xkcd#installation) docker image locally
-8. Browse the commit history to find changes pertaining to particular integration points
-9. ...
-10. Profit!
+8. Start the app
+```
+npm run dev
+```
+9. Browse the commit history to find changes pertaining to particular integration points
